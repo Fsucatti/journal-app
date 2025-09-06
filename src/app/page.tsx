@@ -1,5 +1,4 @@
 // app/page.tsx
-import SessionClient from "@/components/SessionClient";
 import EntryForm from "@/components/EntryForm";
 import EntryList from "@/components/EntryList";
 import SearchBar from "@/components/SearchBar";

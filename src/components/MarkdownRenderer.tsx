@@ -3,11 +3,11 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import tsx from "react-syntax-highlighter/dist/cjs/languages/prism/tsx";
 import javascript from "react-syntax-highlighter/dist/cjs/languages/prism/javascript";
 import css from "react-syntax-highlighter/dist/cjs/languages/prism/css";
-// @ts-expect-error
+// @ts-expect-error Needed to import CodeProps from react-markdown types
+
 import type { CodeProps } from "react-markdown/lib/ast-to-react";
 import CopyableCode from "./CopyableCode";
 
