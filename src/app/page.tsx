@@ -15,10 +15,14 @@ export default async function HomePage() {
     <Layout>
       <div className="w-full max-w-6xl px-4 mx-auto space-y-10">
         <EntryForm />
+
         <Suspense fallback={<div>Loading search bar...</div>}>
           <SearchBar tags={tags} />
         </Suspense>
-        <EntryList />
+
+        <Suspense fallback={<div>Loading entries...</div>}>
+          <EntryList />
+        </Suspense>
       </div>
     </Layout>
   );
