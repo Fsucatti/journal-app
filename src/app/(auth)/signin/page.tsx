@@ -36,7 +36,7 @@ export default function SignInPage() {
         <input
           type="email"
           placeholder="Email"
-          className="w-full px-4 py-2 border border-[var(--forest)] rounded-3xl bg-[var(--soft)]"
+          className="w-full px-4 py-2 border border-[var(--forest)] rounded-3xl bg-[var(--soft) ] text-[var(--charcoal)]"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -44,7 +44,7 @@ export default function SignInPage() {
         <input
           type="password"
           placeholder="Password"
-          className="w-full px-4 py-2 border border-[var(--forest)] rounded-3xl bg-[var(--soft)]"
+          className="w-full px-4 py-2 border border-[var(--forest)] rounded-3xl bg-[var(--soft) ] text-[var(--charcoal)]"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
