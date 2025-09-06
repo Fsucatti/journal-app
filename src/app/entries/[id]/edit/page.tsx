@@ -1,12 +1,16 @@
-
-
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import EditEntryForm from "@/components/EditEntryForm";
 
-export default async function EditPage({ params }: { params: { id: string } }) {
+export default async function EditPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
   const entry = await prisma.entry.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { entryTags: { include: { tag: true } } },
   });
 
