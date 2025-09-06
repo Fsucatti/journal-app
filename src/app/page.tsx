@@ -1,4 +1,4 @@
-// app/page.tsx
+import { Suspense } from "react";
 import EntryForm from "@/components/EntryForm";
 import EntryList from "@/components/EntryList";
 import SearchBar from "@/components/SearchBar";
@@ -15,10 +15,11 @@ export default async function HomePage() {
     <Layout>
       <div className="w-full max-w-6xl px-4 mx-auto space-y-10">
         <EntryForm />
-        <SearchBar tags={tags} />
+        <Suspense fallback={<div>Loading search bar...</div>}>
+          <SearchBar tags={tags} />
+        </Suspense>
         <EntryList />
       </div>
     </Layout>
   );
 }
-
