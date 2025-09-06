@@ -20,7 +20,7 @@ type Entry = {
 export default function EntryList() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
-  const { data: session, status } = useSession();
+  const { data: session, status, } = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
 

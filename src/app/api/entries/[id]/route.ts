@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -13,21 +13,17 @@ export async function PATCH(
   }
 
   const { title, content, tags } = await req.json();
+  const { id } = context.params;
 
-  const existing = await prisma.entry.findUnique({
-    where: { id: params.id },
-  });
+  const existing = await prisma.entry.findUnique({ where: { id } });
 
   if (!existing || existing.authorId !== session.user.id) {
     return NextResponse.json({ error: "Not found or forbidden" }, { status: 404 });
   }
 
-  await prisma.entry.update({
-    where: { id: params.id },
-    data: { title, content },
-  });
+  await prisma.entry.update({ where: { id }, data: { title, content } });
 
-  await prisma.entryTag.deleteMany({ where: { entryId: params.id } });
+  await prisma.entryTag.deleteMany({ where: { entryId: id } });
 
   if (tags && Array.isArray(tags)) {
     for (const name of tags) {
@@ -38,10 +34,7 @@ export async function PATCH(
       });
 
       await prisma.entryTag.create({
-        data: {
-          entryId: params.id,
-          tagId: tag.id,
-        },
+        data: { entryId: id, tagId: tag.id },
       });
     }
   }
@@ -51,16 +44,17 @@ export async function PATCH(
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   const session = await getServerSession(authOptions);
-
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const { id } = context.params;
+
   const entry = await prisma.entry.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { entryTags: { include: { tag: true } } },
   });
 
@@ -71,26 +65,25 @@ export async function GET(
   return NextResponse.json(entry);
 }
 
-
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const existing = await prisma.entry.findUnique({
-    where: { id: params.id },
-  });
+  const { id } = context.params;
+
+  const existing = await prisma.entry.findUnique({ where: { id } });
 
   if (!existing || existing.authorId !== session.user.id) {
     return NextResponse.json({ error: "Not found or forbidden" }, { status: 404 });
   }
 
-  await prisma.entryTag.deleteMany({ where: { entryId: params.id } });
-  await prisma.entry.delete({ where: { id: params.id } });
+  await prisma.entryTag.deleteMany({ where: { entryId: id } });
+  await prisma.entry.delete({ where: { id } });
 
   return NextResponse.json({ success: true });
 }
