@@ -59,23 +59,45 @@ export default function EntryList() {
     return () => window.removeEventListener("journal:changed", reload);
   }, []);
 
-  if (status === "loading" || loading) return <p>Loading...</p>;
+  if (status === "loading") return <p>Loading...</p>;
 
   if (status !== "authenticated") {
     return (
-      <p>
-        Please{" "}
-        <Link href="/signin" className="underline text-[var(--charcoal)] hover:text-[var(--sage)] transition">
-          sign in
-        </Link>{" "}
-        to view your journal.
-      </p>
+      <section className="max-w-xl mx-auto mt-16 rounded-2xl bg-[var(--soft-dark)] p-8 text-center shadow-sm">
+        <h1 className="text-3xl font-semibold text-[var(--forest)]">Your private journal</h1>
+        <p className="mt-3 text-[var(--charcoal)]">
+          Write entries in Markdown, organize them with tags, search them anytime, and export them whenever you like.
+          Only you can read what you write.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Link href="/signin" className="rounded-3xl bg-[var(--forest)] px-5 py-2 text-[var(--soft)] transition hover:bg-[var(--clay)]">
+            Sign in
+          </Link>
+          <Link href="/register" className="rounded-3xl border border-[var(--forest)] px-5 py-2 text-[var(--forest)] transition hover:bg-[var(--sage)]">
+            Create an account
+          </Link>
+        </div>
+      </section>
     );
   }
 
+  if (loading) return <p>Loading...</p>;
+
   return (
     <section className="mt-12 max-w-5xl mx-auto px-4">
-      <h2 className="text-2xl font-semibold text-[var(--forest)] mb-4">Your Journal Entries</h2>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 className="text-2xl font-semibold text-[var(--forest)]">Your Journal Entries</h2>
+        {entries.length > 0 && (
+          // A file download, not a page: next/link would try to navigate to it.
+          // eslint-disable-next-line @next/next/no-html-link-for-pages
+          <a
+            href="/api/entries/export"
+            className="rounded-3xl border border-[var(--forest)] px-4 py-1.5 text-sm text-[var(--forest)] transition hover:bg-[var(--sage)]"
+          >
+            Export to Markdown
+          </a>
+        )}
+      </div>
       
       {entries.length === 0 ? (
         <p className="text-[var(--charcoal)]">No entries yet.</p>

@@ -42,7 +42,10 @@ export default function RegisterPage() {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Password (at least 8 characters)"
+          minLength={8}
+          maxLength={72}
+          autoComplete="new-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full px-4 py-2 border border-[var(--forest)] rounded-3xl bg-[var(--soft)] text-[var(--charcoal)]"

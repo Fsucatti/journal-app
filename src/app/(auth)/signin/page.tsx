@@ -26,7 +26,12 @@ export default function SignInPage() {
     toast.success("Logged in successfully!");
     setTimeout(() => router.push("/"), 1500); // redirect manually
   } else {
-    toast.error("Invalid email or password.");
+    toast.error(
+      res?.error === "TooManyAttempts"
+        ? "Too many failed attempts. Try again in 15 minutes."
+        : "Invalid email or password."
+    );
+    setLoading(false);
   }}
 
   return (
