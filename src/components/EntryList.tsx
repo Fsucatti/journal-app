@@ -20,6 +20,7 @@ type Entry = {
 export default function EntryList() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [version, setVersion] = useState(0);
   const { data: session, status, } = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -49,7 +50,14 @@ export default function EntryList() {
 
     setLoading(true);
     fetchEntries();
-  }, [status, searchParams]);
+  }, [status, searchParams, version]);
+
+  // A new entry doesn't change the URL, so the form announces it with an event.
+  useEffect(() => {
+    const reload = () => setVersion((v) => v + 1);
+    window.addEventListener("journal:changed", reload);
+    return () => window.removeEventListener("journal:changed", reload);
+  }, []);
 
   if (status === "loading" || loading) return <p>Loading...</p>;
 
@@ -57,7 +65,7 @@ export default function EntryList() {
     return (
       <p>
         Please{" "}
-        <Link href="/api/auth/signin" className="underline text-[var(--charcoal)] hover:text-[var(--sage)] transition">
+        <Link href="/signin" className="underline text-[var(--charcoal)] hover:text-[var(--sage)] transition">
           sign in
         </Link>{" "}
         to view your journal.
@@ -120,6 +128,7 @@ export default function EntryList() {
             });
             if (res.ok) {
               setEntries((prev) => prev.filter((e) => e.id !== entry.id));
+              window.dispatchEvent(new Event("journal:changed"));
             }
           }}
           className="flex items-center text-red-600 hover:underline"

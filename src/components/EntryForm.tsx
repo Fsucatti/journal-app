@@ -48,6 +48,7 @@ export default function EntryForm() {
       setContent("");
       setTags("");
       localStorage.removeItem(localStorageKey);
+      window.dispatchEvent(new Event("journal:changed"));
       router.push("/");
     } else {
       setMessage(data.error || "Something went wrong.");

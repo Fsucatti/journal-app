@@ -40,7 +40,6 @@ export async function GET(req: NextRequest) {
       ],
     },
     include: {
-      author: true,
       entryTags: { include: { tag: true } },
     },
     orderBy: { createdAt: "desc" },
@@ -89,7 +88,6 @@ export async function POST(req: Request) {
   const fullEntry = await prisma.entry.findUnique({
     where: { id: entry.id },
     include: {
-      author: true,
       entryTags: { include: { tag: true } },
     },
   });

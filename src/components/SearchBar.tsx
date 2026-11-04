@@ -1,16 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { MagnifyingGlassIcon, ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
 type Tag = {
   name: string;
 };
 
-export default function Searchbar({ tags }: { tags: Tag[] }) {
+export default function Searchbar() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { status } = useSession();
+  const [tags, setTags] = useState<Tag[]>([]);
+
+  // Reload the user's tags when they sign in and whenever their entries change.
+  useEffect(() => {
+    if (status !== "authenticated") {
+      setTags([]);
+      return;
+    }
+    const loadTags = async () => {
+      const res = await fetch("/api/tags");
+      if (res.ok) setTags(await res.json());
+    };
+    void loadTags();
+    window.addEventListener("journal:changed", loadTags);
+    return () => window.removeEventListener("journal:changed", loadTags);
+  }, [status]);
 
   const [query, setQuery] = useState(searchParams.get("q") || "");
   const [selectedTag, setSelectedTag] = useState(searchParams.get("tag") || "");
