@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { CatIcon, PORTFOLIO_URL } from "@/components/ProjectFooter";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { data: session } = useSession();
@@ -11,9 +12,20 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-[var(--soft)] text-[var(--charcoal)] flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--forest)] text-[var(--soft)] p-4 flex justify-between items-center shadow-md">
-        <Link href="/" className="text-xl font-semibold">
-          🌿 Journal App
-        </Link>
+        <div className="flex items-center gap-3">
+          <a
+            href={PORTFOLIO_URL}
+            aria-label="Back to portfolio"
+            title="Back to portfolio"
+            className="flex items-center gap-2 rounded-3xl border border-[var(--soft)]/40 px-3 py-1 text-sm transition hover:bg-[var(--clay)]"
+          >
+            <CatIcon className="h-5 w-5" />
+            <span className="hidden sm:inline">Back to portfolio</span>
+          </a>
+          <Link href="/" className="text-xl font-semibold">
+            🌿 Journal App
+          </Link>
+        </div>
         <div className="text-sm">
             {session?.user?.email ? (
                 <button

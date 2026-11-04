@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
 import NextAuthProvider from "@/components/NextAuthProvider";
+import ProjectFooter from "@/components/ProjectFooter";
 import { Toaster } from "react-hot-toast";
 
 const lora = Lora({
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${lora.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextAuthProvider>{children}</NextAuthProvider>
+        <ProjectFooter />
         <Toaster 
           position="top-right"
           toastOptions={{
