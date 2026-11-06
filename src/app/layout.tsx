@@ -21,9 +21,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const description = "A cozy, private journal: write in Markdown, organize with tags, and search your entries.";
+
 export const metadata: Metadata = {
-  title: "Nature-Inspired Journal",
-  description: "A cozy, nature-themed personal journal built with Next.js",
+  metadataBase: new URL("https://journal-app-francisco-sucatti.vercel.app"),
+  title: "Journal App",
+  description,
+  // Preview shown when the link is shared in chats and social networks.
+  openGraph: { type: "website", title: "Journal App", description, images: [{ url: "/og.jpg", width: 800, height: 420 }] },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
